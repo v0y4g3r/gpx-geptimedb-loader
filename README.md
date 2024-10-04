@@ -34,4 +34,8 @@ for further analysis and visualization.
   --table-name=<target table name>
 ```
 
+## TODO
+- [ ] Support encoding tracks to [GeoJSON line strings](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.4).
+- [ ] Calculate speed/slope while parsing GPX files.
+
 
