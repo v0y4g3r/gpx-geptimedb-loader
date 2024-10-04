@@ -27,11 +27,34 @@ for further analysis and visualization.
 > Please ensure that GreptimeDB instance is started.
 
 ```bash
-./target/debug/gpx-greptimedb-loader \
+./gpx-greptimedb-loader \
   --track-name <track name> \
   --input <GPX file path> \
   --db-endpoint=<GreptimeDB endpoint> \
   --table-name=<target table name>
+```
+
+And now you can play with GEO-GreptimeDB!
+
+```sql
+mysql> select h3_latlng_to_cell(latitude, longitude, 15) from `gpx` 
+            where ts > '2024-10-02 18:53:00' 
+              and ts <= '2024-10-02 18:54:00';
++-------------------------------------------------------------------+
+| h3_latlng_to_cell(gpx.latitude,gpx.longitude,Int64(15)) |
++-------------------------------------------------------------------+
+|                                                644737283886830308 |
+|                                                644737283886866992 |
+|                                                644737283886728076 |
+|                                                644737283886723728 |
+|                                                644737283890276740 |
+|                                                644737283890135468 |
+|                                                644737283890132760 |
+|                                                644737283889228836 |
+|                                                644737283889089750 |
+|                                                644737283889083416 |
++-------------------------------------------------------------------+
+10 rows in set (0.02 sec)
 ```
 
 ## TODO
