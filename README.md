@@ -37,25 +37,27 @@ for further analysis and visualization.
 And now you can play with GEO-GreptimeDB!
 
 ```sql
-mysql> select h3_latlng_to_cell(latitude, longitude, 15) from `gpx` 
-            where ts > '2024-10-02 18:53:00' 
-              and ts <= '2024-10-02 18:54:00';
-+-------------------------------------------------------------------+
-| h3_latlng_to_cell(gpx.latitude,gpx.longitude,Int64(15)) |
-+-------------------------------------------------------------------+
-|                                                644737283886830308 |
-|                                                644737283886866992 |
-|                                                644737283886728076 |
-|                                                644737283886723728 |
-|                                                644737283890276740 |
-|                                                644737283890135468 |
-|                                                644737283890132760 |
-|                                                644737283889228836 |
-|                                                644737283889089750 |
-|                                                644737283889083416 |
-+-------------------------------------------------------------------+
-10 rows in set (0.02 sec)
+mysql> select h3_latlng_to_cell_string(latitude, longitude, 15) from `gpx` 
+		where ts > '2024-10-02 18:53:00' 
+		and ts <= '2024-10-02 18:54:00';
++--------------------------------------------------------------------------+
+| h3_latlng_to_cell_string(gpx.latitude,gpx.longitude,Int64(15)) |
++--------------------------------------------------------------------------+
+| 8f29124cb8652e4                                                          |
+| 8f29124cb86e230                                                          |
+| 8f29124cb84c38c                                                          |
+| 8f29124cb84b290                                                          |
+| 8f29124cbbae984                                                          |
+| 8f29124cbb8c1ac                                                          |
+| 8f29124cbb8b718                                                          |
+| 8f29124cbaaec24                                                          |
+| 8f29124cba8ccd6                                                          |
+| 8f29124cba8b418                                                          |
++--------------------------------------------------------------------------+
+10 rows in set (0.04 sec)
 ```
+
+Guess what track is this?
 
 ## TODO
 - [ ] Support encoding tracks to [GeoJSON line strings](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.4).
