@@ -25,6 +25,7 @@ pub enum Error {
         #[snafu(implicit)]
         location: Location,
     },
+
     #[snafu(display("Timestamp not present"))]
     WriteGreptimeDB {
         #[snafu(source)]
@@ -41,6 +42,7 @@ pub enum Error {
         #[snafu(implicit)]
         location: Location,
     },
+
     #[snafu(display("Failed to read GPX file, path: {}", path))]
     ReadGpxFile {
         path: String,
@@ -48,5 +50,17 @@ pub enum Error {
         source: GpxError,
         #[snafu(implicit)]
         location: Location,
+    },
+
+    #[snafu(display(
+        "Failed to calculate distance between {:?} and {:?}, source: {}",
+        prev,
+        next,
+        msg
+    ))]
+    CalculateDistance {
+        prev: geoutils::Location,
+        next: geoutils::Location,
+        msg: String,
     },
 }

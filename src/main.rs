@@ -17,6 +17,7 @@ use clap::Parser;
 use snafu::ResultExt;
 use std::fs::File;
 use std::io::BufReader;
+use crate::track::fill_speed_on_missing;
 
 mod args;
 mod error;
@@ -39,7 +40,8 @@ async fn main() {
         .unwrap();
 
     for (track_id, track) in gpx.tracks.into_iter().enumerate() {
-        for (seg_id, seg) in track.segments.into_iter().enumerate() {
+        for (seg_id, mut seg) in track.segments.into_iter().enumerate() {
+            fill_speed_on_missing(&mut seg).unwrap();
             db.write(&args.track_name, track_id as u32, seg_id as u32, seg.points)
                 .await
                 .unwrap();

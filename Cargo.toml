@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+approx = "0.5"
 clap = { version = "4.5", features = ["derive"] }
+geoutils = "0.5"
 gpx = "0.10.0"
 greptimedb-ingester = { git = "https://github.com/GreptimeTeam/greptimedb-ingester-rust.git", rev = "2e6b0c5eb6a5e7549c3100e4d356b07d15cce66d" }
 snafu = "0.8"

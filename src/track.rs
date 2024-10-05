@@ -10,15 +10,98 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::error;
+use geoutils::Location;
+use gpx::{TrackSegment, Waypoint};
+
+/// Fills the missing speed in [Waypoint] in segments.
+pub fn fill_speed_on_missing(segment: &mut TrackSegment) -> error::Result<()> {
+    let num_points = segment.points.len();
+    if num_points == 0 {
+        return Ok(());
+    }
+
+    let mut prev_idx = 0;
+    for idx in 1..num_points {
+        let prev = &segment.points[prev_idx];
+        let p = &segment.points[idx];
+
+        if p.speed.is_none() {
+            segment.points[idx].speed = Some(calculate_distance(p, prev)?);
+        }
+        prev_idx = idx;
+    }
+    if num_points > 1 {
+        segment.points[0].speed = segment.points[1].speed;
+    }
+    Ok(())
+}
+
+/// Calculates distance points between [Waypoint] using Vincenty's formulae.
+fn calculate_distance(prev: &Waypoint, next: &Waypoint) -> error::Result<f64> {
+    let prev = Location::new(prev.point().y(), prev.point().x());
+    let next = Location::new(next.point().y(), next.point().x());
+    let distance = next
+        .distance_to(&prev)
+        .map_err(|e| error::Error::CalculateDistance { prev, next, msg: e })?;
+    Ok(distance.meters())
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::track::{calculate_distance, fill_speed_on_missing};
+    use approx::relative_eq;
     use std::fs::File;
     use std::io::BufReader;
 
-    #[tokio::test]
-    async fn test_read_gpx() {
+    #[test]
+    fn test_read_gpx() {
         let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
         let gpx = gpx::read(reader).unwrap();
         gpx.tracks[0].segments[0].points[0].time.unwrap();
+    }
+
+    #[test]
+    fn test_calculate_distance() {
+        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let gpx = gpx::read(reader).unwrap();
+        let points = &gpx.tracks[0].segments[0].points;
+
+        let prev = &points[0];
+        let next = &points[1];
+        let distance = calculate_distance(prev, next).unwrap();
+        assert!(relative_eq!(29.0, distance, epsilon = 1.0))
+    }
+
+    #[test]
+    fn test_fill_speed_on_missing() {
+        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let mut gpx = gpx::read(reader).unwrap();
+        let segment = &mut gpx.tracks[0].segments[0];
+        fill_speed_on_missing(segment).unwrap();
+        assert!(segment.points.iter().all(|p| { p.speed.is_some() }));
+    }
+
+    #[test]
+    fn test_fill_speed_in_empty_segment() {
+        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let mut gpx = gpx::read(reader).unwrap();
+        let segment = &mut gpx.tracks[0].segments[0];
+
+        let mut seg1 = segment.clone();
+        seg1.points.clear();
+        fill_speed_on_missing(&mut seg1).unwrap();
+        assert!(seg1.points.iter().all(|p| { p.speed.is_some() }));
+
+        let mut seg2 = segment.clone();
+        seg2.points.drain(1..seg2.points.len());
+        assert_eq!(1, seg2.points.len());
+        fill_speed_on_missing(&mut seg2).unwrap();
+        assert!(seg2.points[0].speed.is_none());
+
+        let mut seg3 = segment.clone();
+        seg3.points.drain(2..seg3.points.len());
+        fill_speed_on_missing(&mut seg3).unwrap();
+        assert!(seg3.points.iter().all(|p| { p.speed.is_some() }));
     }
 }
