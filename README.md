@@ -55,6 +55,22 @@ mysql> select h3_latlng_to_cell_string(latitude, longitude, 15) from `gpx`
 | 8f29124cba8b418                                                          |
 +--------------------------------------------------------------------------+
 10 rows in set (0.04 sec)
+
+mysql> select max(speed) from gpx;
++--------------------+
+| MAX(gpx.speed)     |
++--------------------+
+| 171.90617142857144 |
++--------------------+
+1 row in set (0.05 sec)
+
+mysql> select avg(speed) from gpx;
++-------------------+
+| AVG(gpx.speed)    |
++-------------------+
+| 60.90703674459004 |
++-------------------+
+1 row in set (0.03 sec)
 ```
 
 Guess what track is this?
