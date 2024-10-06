@@ -1,5 +1,5 @@
 # GreptimeDB GPX File Loader
-![ci](https://github.com/v0y4g3r/gpx-greptimedb-loader/actions/workflows/rust.yml/badge.svg)
+![ci](https://github.com/v0y4g3r/gpx-greptimedb-loader/actions/workflows/rust.yml/badge.svg) [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) is a
 widely used file format for recording locations and tracks.
