@@ -36,7 +36,7 @@ async fn run(args: Args) -> error::Result<usize> {
     let mut total_rows: usize = 0;
     for (track_id, track) in gpx.tracks.into_iter().enumerate() {
         for (seg_id, mut seg) in track.segments.into_iter().enumerate() {
-            fill_speed_on_missing(&mut seg).unwrap();
+            fill_speed_on_missing(&mut seg)?;
             total_rows += db
                 .write(&args.track_name, track_id as u32, seg_id as u32, seg.points)
                 .await? as usize;
