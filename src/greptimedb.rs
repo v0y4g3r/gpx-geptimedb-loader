@@ -211,6 +211,6 @@ mod tests {
         let gpx = gpx::read(reader).unwrap();
         let waypoint = &gpx.tracks[0].segments[0].points[0];
         let row = waypoint_to_row("test", 0, 0, waypoint.clone()).unwrap();
-        assert_eq!(16, row.values.len());
+        assert_eq!(17, row.values.len());
     }
 }

@@ -62,26 +62,26 @@ mod tests {
 
     #[test]
     fn test_read_gpx() {
-        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let reader = BufReader::new(File::open("tests/assets/wikipedia_example.gpx").unwrap());
         let gpx = gpx::read(reader).unwrap();
         gpx.tracks[0].segments[0].points[0].time.unwrap();
     }
 
     #[test]
     fn test_calculate_distance() {
-        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let reader = BufReader::new(File::open("tests/assets/wikipedia_example.gpx").unwrap());
         let gpx = gpx::read(reader).unwrap();
         let points = &gpx.tracks[0].segments[0].points;
 
         let prev = &points[0];
-        let next = &points[1];
+        let next = &points[2];
         let distance = calculate_distance(prev, next).unwrap();
-        assert!(relative_eq!(29.0, distance, epsilon = 1.0))
+        assert!(relative_eq!(430.0, distance, epsilon = 1.0))
     }
 
     #[test]
     fn test_fill_speed_on_missing() {
-        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let reader = BufReader::new(File::open("tests/assets/wikipedia_example.gpx").unwrap());
         let mut gpx = gpx::read(reader).unwrap();
         let segment = &mut gpx.tracks[0].segments[0];
         fill_speed_on_missing(segment).unwrap();
@@ -90,7 +90,7 @@ mod tests {
 
     #[test]
     fn test_fill_speed_in_empty_segment() {
-        let reader = BufReader::new(File::open("/home/lei/1_cst-strlt.gpx").unwrap());
+        let reader = BufReader::new(File::open("tests/assets/wikipedia_example.gpx").unwrap());
         let mut gpx = gpx::read(reader).unwrap();
         let segment = &mut gpx.tracks[0].segments[0];
 

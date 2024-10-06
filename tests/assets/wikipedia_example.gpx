@@ -10,15 +10,15 @@
   <trk>
     <name>Example GPX Document</name>
     <trkseg>
-      <trkpt lat="47.644548" lon="-122.326897">
+      <trkpt lat="34.0612753" lon="-118.2321238">
         <ele>4.46</ele>
         <time>2009-10-17T18:37:26Z</time>
       </trkpt>
-      <trkpt lat="47.644548" lon="-122.326897">
+      <trkpt lat="34.0618999" lon="-118.2305783">
         <ele>4.94</ele>
         <time>2009-10-17T18:37:31Z</time>
       </trkpt>
-      <trkpt lat="47.644548" lon="-122.326897">
+      <trkpt lat="34.0624127" lon="-118.2276745">
         <ele>6.87</ele>
         <time>2009-10-17T18:37:34Z</time>
       </trkpt>
