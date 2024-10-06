@@ -10,7 +10,16 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  # Check typos
+  typos:
+    name: Spell Check with Typos
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crate-ci/typos@mastera
+
   build:
+    needs: typos
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
