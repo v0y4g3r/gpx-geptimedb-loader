@@ -81,5 +81,3 @@ Guess what track is this?
   - [x] Speed
   - [ ] Cumulative distance
   - [ ] Slope
-
-
