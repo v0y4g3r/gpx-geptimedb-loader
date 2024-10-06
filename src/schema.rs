@@ -48,6 +48,7 @@ pub fn gpx_schema() -> Vec<ColumnSchema> {
             ("latitude", ColumnDataType::Float64),
             ("longitude", ColumnDataType::Float64),
             ("elevation", ColumnDataType::Float64),
+            ("speed", ColumnDataType::Float64),
             ("geoidheight", ColumnDataType::Float64),
             ("hdop", ColumnDataType::Float64),
             ("vdop", ColumnDataType::Float64),

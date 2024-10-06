@@ -13,8 +13,10 @@
 use crate::error;
 use geoutils::Location;
 use gpx::{TrackSegment, Waypoint};
+use snafu::OptionExt;
+use time::OffsetDateTime;
 
-/// Fills the missing speed in [Waypoint] in segments.
+/// Fills the missing speed (km/h) in [Waypoint] in segments.
 pub fn fill_speed_on_missing(segment: &mut TrackSegment) -> error::Result<()> {
     let num_points = segment.points.len();
     if num_points == 0 {
@@ -27,7 +29,11 @@ pub fn fill_speed_on_missing(segment: &mut TrackSegment) -> error::Result<()> {
         let p = &segment.points[idx];
 
         if p.speed.is_none() {
-            segment.points[idx].speed = Some(calculate_distance(p, prev)?);
+            let distance = calculate_distance(p, prev)?;
+            let duration = OffsetDateTime::from(p.time.context(error::TimestampNotPresentSnafu)?)
+                - OffsetDateTime::from(prev.time.context(error::TimestampNotPresentSnafu)?);
+            let speed = distance / duration.as_seconds_f64() * 3.6;
+            segment.points[idx].speed = Some(speed);
         }
         prev_idx = idx;
     }
@@ -37,7 +43,7 @@ pub fn fill_speed_on_missing(segment: &mut TrackSegment) -> error::Result<()> {
     Ok(())
 }
 
-/// Calculates distance points between [Waypoint] using Vincenty's formulae.
+/// Calculates distance in meters between two [Waypoint]s using Vincenty's formulae.
 fn calculate_distance(prev: &Waypoint, next: &Waypoint) -> error::Result<f64> {
     let prev = Location::new(prev.point().y(), prev.point().x());
     let next = Location::new(next.point().y(), next.point().x());

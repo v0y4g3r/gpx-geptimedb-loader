@@ -123,55 +123,71 @@ fn waypoint_to_row(name: &str, track: u32, segment: u32, p: Waypoint) -> error::
     let ts = time.unix_timestamp();
     Ok(Row {
         values: vec![
+            // name
             Value {
                 value_data: Some(ValueData::StringValue(name.to_string())),
             },
+            // track id
             Value {
                 value_data: Some(ValueData::U32Value(track)),
             },
+            // segment id
             Value {
                 value_data: Some(ValueData::U32Value(segment)),
             },
+            // timestamp
             Value {
                 value_data: Some(ValueData::TimestampSecondValue(ts)),
             },
+            // latitude
             Value {
                 value_data: Some(ValueData::F64Value(p.point().y())),
             },
+            // longitude
             Value {
                 value_data: Some(ValueData::F64Value(p.point().x())),
             },
+            // elevation
             Value {
                 value_data: p.elevation.map(ValueData::F64Value),
             },
+            // speed
+            Value {
+                value_data: p.speed.map(ValueData::F64Value),
+            },
+            // geoidheight
             Value {
                 value_data: p.geoidheight.map(ValueData::F64Value),
             },
+            // hdop
             Value {
                 value_data: p.hdop.map(ValueData::F64Value),
             },
+            // vdop
             Value {
                 value_data: p.vdop.map(ValueData::F64Value),
             },
+            // pdop
             Value {
                 value_data: p.pdop.map(ValueData::F64Value),
             },
+            // comment
             Value {
-                value_data: p
-                    .comment
-                    .map(ValueData::StringValue),
+                value_data: p.comment.map(ValueData::StringValue),
             },
+            // description
             Value {
-                value_data: p
-                    .description
-                    .map(ValueData::StringValue),
+                value_data: p.description.map(ValueData::StringValue),
             },
+            // source
             Value {
                 value_data: p.source.map(ValueData::StringValue),
             },
+            // symbol
             Value {
                 value_data: p.symbol.map(ValueData::StringValue),
             },
+            // sat
             Value {
                 value_data: p.sat.map(ValueData::U64Value),
             },

@@ -61,8 +61,9 @@ Guess what track is this?
 
 ## TODO
 - [ ] Support encoding tracks to [GeoJSON line strings](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.4).
-- [ ] Calculate speed/slope while parsing GPX files.
+- [ ] Calculations while parsing GPX files.
   - [x] Speed
+  - [ ] Cumulative distance
   - [ ] Slope
 
 

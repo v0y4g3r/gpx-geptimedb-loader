@@ -13,11 +13,11 @@
 use crate::args::Args;
 use crate::error::OpenGpxFileSnafu;
 use crate::greptimedb::Client;
+use crate::track::fill_speed_on_missing;
 use clap::Parser;
 use snafu::ResultExt;
 use std::fs::File;
 use std::io::BufReader;
-use crate::track::fill_speed_on_missing;
 
 mod args;
 mod error;
