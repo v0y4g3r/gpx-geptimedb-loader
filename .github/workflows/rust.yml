@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Install Protoc
+      uses: arduino/setup-protoc@v3
     - name: Check
       run: cargo check --workspace --all-targets
     - name: Clippy
